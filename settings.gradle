@@ -1,0 +1,10 @@
+rootProject.name = 'onlineshop'
+include "applications:onlineshop"
+include "components:appusers"
+include "components:products"
+include "components:transactions"
+include "applications:appusers-ms"
+include "applications:products-ms"
+include "applications:transactions-ms"
+include "components:ui"
+include "components:cart"

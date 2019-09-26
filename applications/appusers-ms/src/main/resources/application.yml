@@ -1,0 +1,12 @@
+server.port: 8081
+
+spring:
+  application:
+    name: appusers-ms
+  jpa:
+    generate-ddl: true
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/appusers?useSSL=false
+    username: root
