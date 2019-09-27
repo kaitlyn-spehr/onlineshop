@@ -57,8 +57,12 @@
   </div>
 </div>
 
-<h1>Online Shop</h1>
-
+<div class="jumbotron">
+  <h1 class="display-4">Online Shop</h1>
+  <p class="lead">Welcome to the admin portal for Online Shop.</p>
+  <hr class="my-4">
+  <p>View customers, products, and transactions. Add, delete, and re-order products.</p>
+</div>
 
 <div class="container">
 
