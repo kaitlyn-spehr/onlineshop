@@ -1,8 +1,7 @@
-package com.perficient.onlineshop.appuserui;
+package com.perficient.onlineshop.cartui;
 
 import com.perficient.onlineshop.productui.ProductClient;
 import com.perficient.onlineshop.productui.ProductUI;
-import com.perficient.onlineshop.transactionui.TransactionClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

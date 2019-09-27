@@ -1,4 +1,4 @@
-package com.perficient.onlineshop.appuserui;
+package com.perficient.onlineshop.cartui;
 
 import com.perficient.onlineshop.productui.ProductUI;
 

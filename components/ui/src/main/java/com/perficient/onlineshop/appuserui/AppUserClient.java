@@ -1,15 +1,19 @@
 package com.perficient.onlineshop.appuserui;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestOperations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppUserClient {
     private static ParameterizedTypeReference<List<AppUserUI>> appUserListType = new ParameterizedTypeReference<List<AppUserUI>>() {};
     private String appUsersURL;
     private RestOperations restOperations;
+    private static final int CACHE_SIZE = 5;
+    private final List<AppUserUI> lastRead = new ArrayList<>(CACHE_SIZE);
 
 
     public AppUserClient(String appUsersURL, RestOperations restOperations) {
@@ -26,32 +30,26 @@ public class AppUserClient {
         restOperations.delete(deleteURL);
     }
 
-
+    @HystrixCommand(fallbackMethod="getAllFallback")
     public List<AppUserUI> getAll() {
-        return restOperations.exchange(appUsersURL, HttpMethod.GET, null, appUserListType).getBody();
+        List<AppUserUI>read = restOperations.exchange(appUsersURL, HttpMethod.GET, null, appUserListType).getBody();
+        lastRead.clear();
+        int copyCount = (read.size() < CACHE_SIZE) ? read.size() : CACHE_SIZE;
+        for (int i =0; i < copyCount; i++) {
+            lastRead.add(read.get(i));
+        }
+        return read;
+    }
+
+
+    public List<AppUserUI> getAllFallback() {
+        return lastRead;
     }
 
     public AppUserUI view(Long id) {
         String viewURL = new StringBuilder(appUsersURL).append("/").append(id).toString();
         return restOperations.getForObject(viewURL, AppUserUI.class);
     }
-//
-//    public int countAll() {
-//        return restOperations.getForEntity(appUserURL + "/count", Integer.class).getBody();
-//    }
-//
-//    public List<AppUserUI> findAll() {
-//        String URI = UriComponentsBuilder.fromUriString(appUserURL).toUriString();
-//        return restOperations.exchange(URI, HttpMethod.GET, null, appUserListType).getBody();
-//    }
-//
-//    public List<AppUserUI> findRange(String field, String key) {
-//        String URI = UriComponentsBuilder.fromUriString(appUserURL)
-//                .queryParam("field", field)
-//                .queryParam("key", key)
-//                .toUriString();
-//        return restOperations.exchange(URI, HttpMethod.GET, null, appUserListType).getBody();
-//    }
 }
 
 

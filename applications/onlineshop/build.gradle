@@ -26,4 +26,6 @@ dependencies {
     compile('commons-lang:commons-lang:2.4')
     compile('org.springframework.cloud:spring-cloud-starter-oauth2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile('io.pivotal.spring.cloud:spring-cloud-services-starter-circuit-breaker')
+
 }

@@ -1,15 +1,19 @@
 package com.perficient.onlineshop.transactionui;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestOperations;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TransactionClient {
     private static ParameterizedTypeReference<List<TransactionUI>> transactionListType = new ParameterizedTypeReference<List<TransactionUI>>() {};
     private String transactionsURL;
     private RestOperations restOperations;
+    private static final int CACHE_SIZE = 5;
+    private final List<TransactionUI> lastRead = new ArrayList<>(CACHE_SIZE);
 
 
     public TransactionClient(String transactionsURL, RestOperations restOperations) {
@@ -21,31 +25,21 @@ public class TransactionClient {
         restOperations.postForEntity(transactionsURL, transactionUI, TransactionUI.class);
     }
 
+    @HystrixCommand(fallbackMethod="getAllFallback")
     public List<TransactionUI> getAll() {
-        return restOperations.exchange(transactionsURL, HttpMethod.GET, null, transactionListType).getBody();
+        List<TransactionUI> read = restOperations.exchange(transactionsURL, HttpMethod.GET, null, transactionListType).getBody();
+        lastRead.clear();
+        int copyCount = (read.size() < CACHE_SIZE) ? read.size() : CACHE_SIZE;
+        for (int i =0; i < copyCount; i++) {
+            lastRead.add(read.get(i));
+        }
+        return read;
     }
-//
-//    public void delete(Long id) {
-//        String deleteURL = new StringBuilder(transactionURL).append("/").append(id).toString();
-//        restOperations.delete(deleteURL);
-//    }
-//
-//    public int countAll() {
-//        return restOperations.getForEntity(transactionURL + "/count", Integer.class).getBody();
-//    }
-//
-//    public List<TransactionUI> findAll() {
-//        String URI = UriComponentsBuilder.fromUriString(transactionURL).toUriString();
-//        return restOperations.exchange(URI, HttpMethod.GET, null, transactionListType).getBody();
-//    }
-//
-//    public List<TransactionUI> findRange(String field, String key) {
-//        String URI = UriComponentsBuilder.fromUriString(transactionURL)
-//                .queryParam("field", field)
-//                .queryParam("key", key)
-//                .toUriString();
-//        return restOperations.exchange(URI, HttpMethod.GET, null, transactionListType).getBody();
-//    }
+
+    public List<TransactionUI> getAllFallback() {
+        return lastRead;
+    }
+
 }
 
 

@@ -27,3 +27,4 @@ applications:
       - route: PRO-onlineshop.apps.pcf.paltraining.perficient.com
     services:
       - service-registry
+      - circuit-breaker

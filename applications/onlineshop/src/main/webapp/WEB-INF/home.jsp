@@ -57,15 +57,8 @@
   </div>
 </div>
 
-<div class="jumbotron">
-  <h1 class="display-4">Online Shop</h1>
-  <p class="lead">Welcome to the admin portal for Online Shop.</p>
-  <hr class="my-4">
-  <p>View customers, products, and transactions. Add, delete, and re-order products.</p>
-</div>
-
 <div class="container">
-
+  <h1>Online Shop</h1>
   <p>Please select one of the following links:</p>
   <a href="appusers">AppUsers</a> <br/>
   <a href="products">Products</a> <br/>

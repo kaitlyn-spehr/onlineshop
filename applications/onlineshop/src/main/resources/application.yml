@@ -8,4 +8,11 @@ spring:
 logging.level:
   root: WARN
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
 

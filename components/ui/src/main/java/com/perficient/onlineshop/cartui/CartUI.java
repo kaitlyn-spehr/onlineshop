@@ -1,10 +1,8 @@
-package com.perficient.onlineshop.appuserui;
+package com.perficient.onlineshop.cartui;
 
 import com.perficient.onlineshop.productui.ProductUI;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CartUI {

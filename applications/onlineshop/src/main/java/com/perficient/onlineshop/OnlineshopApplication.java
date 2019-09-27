@@ -5,7 +5,7 @@ import com.perficient.onlineshop.productui.ProductClient;
 import com.perficient.onlineshop.transactionui.TransactionClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableEurekaClient
+@EnableCircuitBreaker
 public class OnlineshopApplication {
 
 	private String appUsersURL = "//appusers-ms/appusers";
